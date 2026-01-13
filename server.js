@@ -7,7 +7,7 @@ const { createClient } = require("@supabase/supabase-js");
 
 const supabase = createClient(
   "https://rgwqpuvbqdkwcojzvryw.supabase.co",
-  "sb_publishable_aiFeq8afElSkXr9PmZ8rOA_XXI9ZMbJ"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnd3FwdXZicWRrd2Nvanp2cnl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMDY1NjksImV4cCI6MjA4Mzg4MjU2OX0.DZ1HoLP9rN3e5V2MZQMMF8CZaPps-9jSwKyQBycdjR8"
 );
 
 app.post("/save/:token", async (req,res)=>{
