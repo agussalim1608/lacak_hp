@@ -1,8 +1,6 @@
-<div id="map" style="height:100vh"></div>
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
 <script>
-fetch("/location").then(r=>r.json()).then(d=>{
- let map=new google.maps.Map(document.getElementById("map"),{zoom:15,center:{lat:d.lat,lng:d.lng}});
- new google.maps.Marker({position:{lat:d.lat,lng:d.lng},map});
+let token=prompt("Enter tracking token:");
+fetch("/location/"+token).then(r=>r.json()).then(d=>{
+ document.body.innerHTML=JSON.stringify(d,null,2);
 });
 </script>
