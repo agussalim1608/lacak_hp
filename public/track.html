@@ -1,11 +1,17 @@
 <script>
-let token=new URLSearchParams(location.search).get("token");
+let token = new URLSearchParams(location.search).get("token");
+
 navigator.geolocation.getCurrentPosition(pos=>{
  fetch("/save/"+token,{
   method:"POST",
-  headers:{'Content-Type':'application/json'},
-  body:JSON.stringify({lat:pos.coords.latitude,lng:pos.coords.longitude,time:new Date()})
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({
+    lat: pos.coords.latitude,
+    lng: pos.coords.longitude,
+    time: new Date()
+  })
  });
+
  document.body.innerHTML="<h2>Location sent</h2>";
 });
 </script>
