@@ -1,27 +1,33 @@
 const express = require("express");
-const fs = require("fs");
 const app = express();
-
 app.use(express.json());
 app.use(express.static("public"));
 
-const DB = "locations.json";
+const { createClient } = require("@supabase/supabase-js");
 
-app.post("/save/:token", (req,res)=>{
- let all = {};
- if(fs.existsSync(DB)) all = JSON.parse(fs.readFileSync(DB));
+const supabase = createClient(
+  "https://rgwqpuvbqdkwcojzvryw.supabase.co",
+  "sb_publishable_aiFeq8afElSkXr9PmZ8rOA_XXI9ZMbJ"
+);
 
- if(!all[req.params.token]) all[req.params.token]=[];
- all[req.params.token].push(req.body);
+app.post("/save/:token", async (req,res)=>{
+  const { token } = req.params;
+  const { lat, lng, time } = req.body;
 
- fs.writeFileSync(DB, JSON.stringify(all));
- res.send({ok:true});
+  await supabase.from("locations").insert([{ token, lat, lng, time }]);
+  res.send({ok:true});
 });
 
-app.get("/location/:token",(req,res)=>{
- if(!fs.existsSync(DB)) return res.json([]);
- let all = JSON.parse(fs.readFileSync(DB));
- res.json(all[req.params.token] || []);
+app.get("/location/:token", async (req,res)=>{
+  const { token } = req.params;
+  const { data } = await supabase
+     .from("locations")
+     .select("*")
+     .eq("token", token)
+     .order("time", { ascending:false })
+     .limit(1);
+
+  res.json(data || []);
 });
 
 app.listen(process.env.PORT || 3000);
